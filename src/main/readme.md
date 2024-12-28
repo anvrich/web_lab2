@@ -54,3 +54,4 @@
 
 ![img](/src/main/webapp/img/1/Снимок экрана 2024-12-12 в 22.58.09.png)
 ![](/src/main/webapp/img/1/desmos.png)
+![](/src/main/webapp/img/look/1.png)
