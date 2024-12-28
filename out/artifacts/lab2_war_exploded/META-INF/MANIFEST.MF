@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Created-By: IntelliJ IDEA
+Built-By: anvarkhonsobitov
+Build-Jdk: Amazon Corretto 17.0.12 - aarch64
+
