@@ -37,14 +37,16 @@ public class Model implements Serializable {
     public String getTime() {
         return time;
     }
+
     @Override
     public String toString() {
-        return "Result{" +
+        return "Model{" +
                 "x=" + x +
                 ", y=" + y +
                 ", r=" + r +
                 ", hit=" + hit +
-                ", time=" + time +
+                ", time='" + time + '\'' +
+                ", executionTime=" + executionTime +
                 '}';
     }
 }

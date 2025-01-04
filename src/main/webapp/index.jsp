@@ -91,6 +91,6 @@
     <input type="button" id="clearButton" value="Очистить таблицу">
     </div>
 </div>
-<script src="JavaScript/script.js" defer></script>
+<script type="module" src="JavaScript/main.js" defer></script>
 </body>
 </html>

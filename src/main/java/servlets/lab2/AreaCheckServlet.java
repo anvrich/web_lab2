@@ -10,9 +10,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @WebServlet("/checkArea")
 public class AreaCheckServlet extends HttpServlet {
+    private static final Logger logger = LoggerFactory.createLogger(AreaCheckServlet.class.getName());
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Date currentTime = new Date();
         long startTime = System.nanoTime();
@@ -22,7 +29,18 @@ public class AreaCheckServlet extends HttpServlet {
             x = Double.parseDouble(request.getParameter("x"));
             y = Double.parseDouble(request.getParameter("y"));
             r = Double.parseDouble(request.getParameter("r"));
+
+            // Server-side validation
+            if (x < -5 || x > 3 || y < -5 || y > 3 || r < 1 || r > 4) {
+                logger.warning("Validation failed: x=" + x + ", y=" + y + ", r=" + r);
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"error\": \"Invalid input values. X: -5 to 3, Y: -5 to 3, R: 1 to 4.\"}");
+                return;
+            }
+
+            logger.info("|Processing request|: x=" + x + ", y=" + y + ", r=" + r);
         } catch (NumberFormatException | NullPointerException e) {
+            logger.severe("Invalid parameters: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("application/json");
             response.getWriter().write("{\"error\": \"Invalid parameters\"}");
@@ -42,7 +60,16 @@ public class AreaCheckServlet extends HttpServlet {
             results = new ArrayList<>();
             getServletContext().setAttribute("results", results);
         }
-        results.add(new Model(x, y, r, hit, formattedDate, timeMicsec));
+        double roundedTimeMicsec = Math.round(timeMicsec * 100.0) / 100.0;
+        results.add(new Model(x, y, r, hit, formattedDate, roundedTimeMicsec));
+        if (results != null) {
+            for (Model res : results) {
+                logger.info("Инфо : " + res.toString());
+            }
+        }else {
+            logger.info("No res found in the context");
+        }
+        logger.info("|Result logged|: hit=" + hit + ", execution time=" + timeMicsec + " microsec");
 
         try (PrintWriter out = response.getWriter()) {
             response.setContentType("application/json");
