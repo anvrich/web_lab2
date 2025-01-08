@@ -1,18 +1,22 @@
-import {graphClick} from './graph.js';
-import { showError } from './errorHandling.js';
+import {filterPointsByRadius, graphClick} from './graph.js';
+import {clearError, showError} from './errorHandling.js';
 import { addRowToTable, clearGraphPoints, seePoint } from './graph.js';
 import { validateY, validateR, validateX } from './validation.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    const rows = document.querySelectorAll(".jsTableRes tr");
-    rows.forEach(row => {
-        const cells = row.querySelectorAll("td");
-        const x = parseFloat(cells[1].textContent);
-        const y = parseFloat(cells[2].textContent);
-        const r = parseFloat(cells[3].textContent);
-        const hit = cells[4].textContent === "Да";
-        seePoint(x, y, r, hit);
-    });
+    // const rows = document.querySelectorAll(".jsTableRes tr");
+    // rows.forEach(row => {
+    //     const cells = row.querySelectorAll("td");
+    //     const x = parseFloat(cells[1].textContent);
+    //     const y = parseFloat(cells[2].textContent);
+    //     const r = parseFloat(cells[3].textContent);
+    //     const hit = cells[4].textContent === "Да";
+    //     seePoint(x, y, r, hit);
+    // });
+    const initialR = parseFloat(document.querySelector("input[name='r']").value);
+    if (!isNaN(initialR)) {
+        filterPointsByRadius(initialR);
+    }
     graphClick();
 });
 
@@ -22,6 +26,15 @@ const rInput = form.querySelector("input[name=r]");
 const clearButton = document.getElementById("clearButton");
 const tableBody = document.querySelector(".jsTableRes");
 
+rInput.addEventListener("input", () => {
+    const rValue = parseFloat(rInput.value.replace(',', '.'));
+    if (isNaN(rValue) || rValue < 1 || rValue > 4) {
+        showError("R должно быть числом от 1 до 4.");
+        return;
+    }
+    clearError();
+    filterPointsByRadius(rValue);
+});
 yInput.addEventListener("input", () => {
     yInput.value = yInput.value.replace(",", ".");
 });

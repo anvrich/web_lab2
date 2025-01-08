@@ -25,7 +25,11 @@ export function seePoint(x, y, r, hit) {
     point.setAttribute("fill", hit ? "green" : "red");
     point.setAttribute("class", "graph-point");
 
+    point.setAttribute("data-r", r);
+
     svg.appendChild(point);
+    filterPointsByRadius(parseFloat(document.querySelector("input[name='r']").value));  // Фильтрация точек
+
 }
 
 export function graphClick() {
@@ -71,4 +75,16 @@ export function graphClick() {
 export function clearGraphPoints() {
     const points = document.querySelectorAll(".graph-point");
     points.forEach(point => point.remove());
+}
+
+export function filterPointsByRadius(rValue) {
+    const points = document.querySelectorAll(".graph-point");
+    points.forEach(point => {
+        const pointRadius = parseFloat(point.getAttribute("data-r"));
+        if (pointRadius === rValue) {
+            point.style.display = "block";
+        } else {
+            point.style.display = "none";
+        }
+    });
 }
