@@ -1,4 +1,4 @@
-import { graphClick } from './graph.js';
+import {graphClick} from './graph.js';
 import { showError } from './errorHandling.js';
 import { addRowToTable, clearGraphPoints, seePoint } from './graph.js';
 import { validateY, validateR, validateX } from './validation.js';
@@ -25,7 +25,6 @@ const tableBody = document.querySelector(".jsTableRes");
 yInput.addEventListener("input", () => {
     yInput.value = yInput.value.replace(",", ".");
 });
-
 rInput.addEventListener("input", () => {
     rInput.value = rInput.value.replace(",", ".");
 });
@@ -60,7 +59,7 @@ form.addEventListener("submit", async (event) => {
 
 clearButton.addEventListener("click", async () => {
     try {
-        const response = await fetch("/lab2-1.0-SNAPSHOT/controller?clear=true", { method: "GET" });
+        const response = await fetch("/lab2-1.0-SNAPSHOT/controller?clear", { method: "GET" });
         if (response.ok) {
             tableBody.innerHTML = "";
             clearGraphPoints();

@@ -21,7 +21,7 @@
     </thead>
     <tbody class="jsTableRes">
     <%
-        List<Model> results = (List<Model>) application.getAttribute("results");
+        List<Model> results = (List<Model>) session.getAttribute("results");
         if (results != null) {
             int counter = 1;
             for (Model result : results) {

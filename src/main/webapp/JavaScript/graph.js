@@ -1,4 +1,5 @@
 import {clearError, showError} from './errorHandling.js';
+import { validateR } from './validation.js';
 
 export function addRowToTable(result) {
     const tableBody = document.querySelector(".jsTableRes");
@@ -34,19 +35,26 @@ export function graphClick() {
     svg.addEventListener("click", async (event) => {
         const r = parseFloat(rInput.value.replace(',', '.'));
         clearError();
-        if (isNaN(r) || r < 1 || r > 4) {
-            showError("Задайте радиус (R) в диапазоне от 1 до 4 перед кликом по графику.");
+
+        if (!validateR(r)) {
             return;
         }
         const rect = svg.getBoundingClientRect();
         const scale = 120 / r;
         const x = ((event.clientX - rect.left - 150) / scale).toFixed(2);
         const y = (-(event.clientY - rect.top - 150) / scale).toFixed(2);
+        if (x < -5 || x > 3) {
+            showError("X должен быть в диапазоне от -5 до 3.");
+            return;
+        }
+        if (y < -5 || y > 3) {
+            showError("Y должен быть в диапазоне от -5 до 3.");
+            return;
+        }
         try {
             const response = await fetch(`/lab2-1.0-SNAPSHOT/controller?x=${x}&y=${y}&r=${r}`, {
                 method: "GET"
             });
-
             if (response.ok) {
                 const result = await response.json();
                 addRowToTable(result);
