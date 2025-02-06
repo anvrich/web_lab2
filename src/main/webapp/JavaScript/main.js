@@ -4,7 +4,6 @@ import { addRowToTable, clearGraphPoints, seePoint } from './graph.js';
 import { validateY, validateR, validateX } from './validation.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("asd");
     const rows = document.querySelectorAll(".jsTableRes tr");
     rows.forEach(row => {
         const cells = row.querySelectorAll("td");
@@ -14,10 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const hit = cells[4].textContent === "Да";
         seePoint(x, y, r, hit);
     });
-    const initialR = parseFloat(document.querySelector("input[name='r']").value);
-    if (!isNaN(initialR)) {
-        filterPointsByRadius(initialR);
-    }
     graphClick();
 });
 

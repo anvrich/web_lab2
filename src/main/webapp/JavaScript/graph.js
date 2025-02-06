@@ -28,8 +28,7 @@ export function seePoint(x, y, r, hit) {
     point.setAttribute("data-r", r);
 
     svg.appendChild(point);
-    filterPointsByRadius(parseFloat(document.querySelector("input[name='r']").value));  // Фильтрация точек
-
+    filterPointsByRadius(parseFloat(document.querySelector("input[name='r']").value));
 }
 
 export function graphClick() {

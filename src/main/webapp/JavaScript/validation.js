@@ -1,7 +1,7 @@
-import { showError, clearError } from './errorHandling.js';
+import {showError, clearError} from './errorHandling.js';
 
 export function validateY(yValue) {
-    if (isNaN(yValue) || yValue < -5 || yValue > 3) {
+    if (!/^-?\d+(\.\d+)?$/.test(yValue) || yValue < -5 || yValue > 3) {
         showError("Y должно быть числом от -5 до 3.");
         return false;
     }
@@ -10,7 +10,7 @@ export function validateY(yValue) {
 }
 
 export function validateR(rValue) {
-    if (isNaN(rValue) || rValue < 1 || rValue > 4) {
+    if (!/^-?\d+(\.\d+)?$/.test(rValue) || rValue < 1 || rValue > 4) {
         showError("R должно быть числом от 1 до 4.");
         return false;
     }

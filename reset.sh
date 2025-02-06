@@ -1,1 +1,1 @@
-docker build -t wildfly-lab2 .
+docker build -t lab2 .
