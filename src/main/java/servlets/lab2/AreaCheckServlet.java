@@ -1,7 +1,6 @@
 
 package servlets.lab2;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -16,9 +15,10 @@ public class AreaCheckServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.createLogger(AreaCheckServlet.class.getName());
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  IOException {
         String error = (String) request.getAttribute("error");
         if (error != null) {
+            logger.warning("Error: " + error);
             sendErrorResponse(response, error);
             return;
         }
@@ -29,11 +29,13 @@ public class AreaCheckServlet extends HttpServlet {
             y = Double.parseDouble(request.getParameter("y"));
             r = Double.parseDouble(request.getParameter("r"));
         } catch (NumberFormatException e) {
+            logger.warning("Invalid number format");
             sendErrorResponse(response, "Invalid number format");
             return;
         }
 
         if (!isValidRange(x, y, r)) {
+            logger.warning(String.format("Invalid parameters: x=%.2f, y=%.2f, r=%.2f", x, y, r));
             sendErrorResponse(response, String.format(Locale.US, "Invalid parameters: x=%.2f, y=%.2f, r=%.2f", x, y, r));
             return;
         }
@@ -43,10 +45,7 @@ public class AreaCheckServlet extends HttpServlet {
         double executionTime = (System.nanoTime() - startTime) / 1000.0;
 
         String formattedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        LoggerFactory.logInfo(logger, "Area check result", Map.of(
-                "x", x, "y", y, "r", r, "hit", hit, "executionTime", executionTime + " microsec"
-        ));
+        LoggerFactory.logInfo(logger, "Area check result", Map.of("x", x, "y", y, "r", r, "hit", hit, "executionTime", executionTime + " microsec"));
 
         HttpSession session = request.getSession();
         List<Model> results = (List<Model>) session.getAttribute("results");

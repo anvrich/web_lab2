@@ -16,6 +16,7 @@ public class ControllerServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         if (request.getParameter("clear") != null) {
+            logger.info("Clear request received");
             request.getRequestDispatcher("/clear").forward(request, response);
             return;
         }
@@ -23,10 +24,12 @@ public class ControllerServlet extends HttpServlet {
         String y = request.getParameter("y");
         String r = request.getParameter("r");
         if (x == null || y == null || r == null) {
+            logger.warning("Missing parameters: x, y, r");
             request.setAttribute("error", "Missing required parameters: x, y, r");
             request.getRequestDispatcher("/checkArea").forward(request, response);
             return;
         }
+        logger.info("Forwarding to /checkArea with parameters: x=" + x + ", y=" + y + ", r=" + r);
         request.getRequestDispatcher("/checkArea").forward(request, response);
 
 
